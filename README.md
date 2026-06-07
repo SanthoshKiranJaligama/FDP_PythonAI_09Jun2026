@@ -253,6 +253,150 @@ Recommended explanation order for the demo:
 
 ---
 
+## GitHub Setup for Participants
+
+This section explains how every participant should **fork** the shared repository, work in their own copy, and follow the branch rules that protect the main codebase.
+
+### 15. Fork the repository
+
+Forking creates your own independent copy of the project under your GitHub account. You can freely modify it, break things, fix them, and push — without affecting the instructor's original repository.
+
+1. Open the repository in your browser:
+   ```
+   https://github.com/SanthoshKiranJaligama/FDP_PythonAI_09Jun2026
+   ```
+2. Click the **Fork** button (top-right corner of the page).
+3. On the "Create a new fork" screen, keep the default name `FDP_PythonAI_09Jun2026` and click **Create fork**.
+4. You now have your own copy at:
+   ```
+   https://github.com/YOUR_USERNAME/FDP_PythonAI_09Jun2026
+   ```
+
+### 16. Clone your fork to your laptop
+
+Clone **your fork** (not the instructor's original):
+
+**Command Prompt:**
+```cmd
+git clone https://github.com/YOUR_USERNAME/FDP_PythonAI_09Jun2026.git
+cd FDP_PythonAI_09Jun2026
+```
+
+**PowerShell:**
+```powershell
+git clone https://github.com/YOUR_USERNAME/FDP_PythonAI_09Jun2026.git
+Set-Location FDP_PythonAI_09Jun2026
+```
+
+### 17. Create a personal practice branch
+
+> **Rule: Never commit directly to `main`.** All your changes must go into a personal branch.
+
+Create and switch to a new branch named with your identifier:
+
+```cmd
+git checkout -b practice/YOUR_NAME
+```
+
+For example:
+```cmd
+git checkout -b practice/santhosh-kiran
+```
+
+You will do all your work — edits, experiments, test breakage demos — on this branch.
+
+### 18. Make changes, commit, and push your branch
+
+After making any change:
+
+```cmd
+git add .
+git commit -m "describe what you changed"
+git push origin practice/YOUR_NAME
+```
+
+This pushes only to **your fork**, so the instructor's repository is never touched.
+
+### 19. Keep your fork up to date with the instructor's repo
+
+If the instructor pushes new changes to the original repository, sync them into your fork:
+
+```cmd
+git remote add upstream https://github.com/SanthoshKiranJaligama/FDP_PythonAI_09Jun2026.git
+git fetch upstream
+git checkout main
+git merge upstream/main
+git push origin main
+```
+
+Then rebase your practice branch on top:
+```cmd
+git checkout practice/YOUR_NAME
+git rebase main
+```
+
+### 20. Open a Pull Request (optional exploration)
+
+To practice the PR workflow:
+1. Push your practice branch to your fork.
+2. Go to your fork on GitHub.
+3. Click **Compare & pull request**.
+4. Set the base as **your own fork's `main`** (not the instructor's).
+5. Describe your changes and click **Create pull request**.
+6. GitHub Actions will automatically run the CI pipeline on your PR.
+
+---
+
+## Branch Protection Rules
+
+The instructor repository has branch protection rules configured on `main` to prevent accidental or unauthorized changes.
+
+### What is protected
+
+| Rule | Effect |
+|------|--------|
+| **Require pull request before merging** | No one can push commits directly to `main`. Changes must go through a PR. |
+| **Require status checks to pass** | The `AI Demo CI/CD Pipeline` must succeed before a PR can be merged. |
+| **Dismiss stale reviews** | If new commits are pushed to a PR, previous approvals are dismissed automatically. |
+| **Block force pushes** | `git push --force` to `main` is rejected. |
+| **Restrict deletions** | The `main` branch cannot be deleted. |
+
+### Setting up branch protection on your own fork (recommended)
+
+After forking, protect your own `main` branch too:
+
+1. Go to your fork on GitHub.
+2. Click **Settings** → **Branches**.
+3. Click **Add branch protection rule**.
+4. In **Branch name pattern**, type `main`.
+5. Enable:
+   - ✅ Require a pull request before merging
+   - ✅ Require status checks to pass before merging
+   - ✅ Block force pushes
+6. Click **Create**.
+
+This mirrors the instructor's protection on your own copy and gives you practice with real-world branch governance.
+
+### How participants should work (summary)
+
+```
+Instructor repo (read-only for participants)
+    ↓  fork
+Your fork on GitHub  (your personal sandbox)
+    ↓  clone
+Your laptop
+    ↓  checkout -b practice/YOUR_NAME
+Your practice branch  ← all edits happen here
+    ↓  push
+Your fork/practice branch  ← triggers GitHub Actions on YOUR repo
+    ↓  pull request (optional)
+Your fork/main  ← safe merge after CI passes
+```
+
+The instructor's `main` branch is **never modified** by participants.
+
+---
+
 ## Windows 11 troubleshooting
 
 ### Python not found
@@ -326,6 +470,14 @@ A clean live demonstration flow is:
 10. Show `deployed_test.json`.
 11. Break one test and show pipeline failure.
 12. Restore test and rerun successfully.
+13. Open the GitHub repository and show the `.github/workflows/ai-pipeline.yml` file.
+14. Show the completed GitHub Actions run and the uploaded `deployed-test-receipt` artifact.
+15. Each participant forks the repository to their own GitHub account.
+16. Participant clones their fork and creates a `practice/YOUR_NAME` branch.
+17. Participant makes a small intentional change (e.g., adjusts a threshold or adds a comment).
+18. Participant commits and pushes their branch — GitHub Actions runs automatically on their fork.
+19. Participant opens a pull request from their branch to their fork's `main` and watches CI results.
+20. Demonstrate that a direct push to `main` is rejected by branch protection rules.
 
 ---
 

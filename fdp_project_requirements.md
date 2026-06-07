@@ -214,7 +214,9 @@ The project should also run on macOS or Linux with equivalent Python and pip com
 - Virtual environment support through `venv`. [cite:1]
 - VS Code or equivalent text editor. [cite:1]
 - Command Prompt or PowerShell for execution. [cite:1]
-- Optional GitHub repository for demonstrating workflow automation. [cite:1]
+- GitHub account for forking the repository and triggering GitHub Actions. [cite:1]
+- Git for Windows for cloning and branch management. [cite:1]
+- GitHub CLI (`gh`) for authenticated operations and pipeline monitoring. [cite:1]
 
 ### Dependency specification
 
@@ -237,6 +239,61 @@ The demo solution uses a modular but intentionally lightweight folder structure 
 | `deploy.py` | Deployment simulation and JSON artifact creation. [cite:1] |
 | `.github/workflows/` | Cloud-style CI/CD workflow definition. [cite:1] |
 | `requirements-*.txt` | Environment dependency manifests. [cite:1] |
+
+## GitHub Repository and Participant Workflow
+
+### Repository
+
+The canonical project repository is hosted at:
+```
+https://github.com/SanthoshKiranJaligama/FDP_PythonAI_09Jun2026
+```
+
+Participants must not modify the instructor's `main` branch. The repository has branch protection rules enforced on `main` to prevent direct pushes.
+
+### Participant fork and branch requirements
+
+| ID | Requirement |
+|---|---|
+| FR-GH-01 | Each participant shall fork the instructor repository to their own GitHub account before making any changes. |
+| FR-GH-02 | Each participant shall clone their own fork to their local machine. |
+| FR-GH-03 | Each participant shall create a personal practice branch named `practice/PARTICIPANT_NAME` before making any edits. |
+| FR-GH-04 | All participant commits shall be pushed to their personal branch in their own fork only. |
+| FR-GH-05 | Participants shall not push directly to the `main` branch of their fork. |
+| FR-GH-06 | A push to any branch in a participant's fork shall trigger the GitHub Actions pipeline automatically. |
+| FR-GH-07 | Participants shall open a pull request from their practice branch to their fork's `main` to practice the PR workflow. |
+| FR-GH-08 | Participants shall sync their fork with the upstream instructor repository whenever the instructor pushes updates. |
+
+### Branch protection policy for the instructor repository
+
+The following protections must be active on the `main` branch of the instructor repository.
+
+| Rule | Setting |
+|---|---|
+| Require pull request before merging | Enabled — no direct commits to `main` allowed |
+| Require status checks to pass | `AI Demo CI/CD Pipeline` job must succeed |
+| Dismiss stale pull request approvals | Enabled |
+| Block force pushes | Enabled |
+| Restrict branch deletion | Enabled |
+
+Participants are encouraged to apply the same protection rules to their own fork's `main` branch as a learning exercise in repository governance.
+
+### How to configure branch protection on GitHub
+
+To enable branch protection on the instructor repository or a participant's fork:
+
+1. Navigate to the repository on GitHub.
+2. Click **Settings** → **Branches**.
+3. Click **Add branch protection rule**.
+4. Set **Branch name pattern** to `main`.
+5. Enable the rules listed in the table above.
+6. Click **Create**.
+
+### GitHub Actions in participant forks
+
+When a participant forks the repository, the `.github/workflows/ai-pipeline.yml` file is copied to their fork. GitHub Actions will run on their fork automatically whenever they push to any branch or open a pull request, provided Actions are enabled on their fork. Participants should verify Actions are enabled under **Settings** → **Actions** → **General** in their fork.
+
+---
 
 ## Non-functional requirements
 
@@ -291,6 +348,11 @@ The project set shall be considered successful for FDP delivery when all the fol
 | AC-05 | The participant can run `pipeline.py` and generate a successful deployment JSON artifact. [cite:1] |
 | AC-06 | The participant can intentionally break a test and observe the pipeline stopping before deployment. [cite:1] |
 | AC-07 | The participant can relate the local pipeline simulation to the GitHub Actions workflow file. [cite:1] |
+| AC-08 | The participant can fork the instructor repository and clone their fork to a local machine. [cite:1] |
+| AC-09 | The participant can create a personal practice branch and push commits to it without touching `main`. [cite:1] |
+| AC-10 | The participant can observe the GitHub Actions pipeline run automatically on their fork after a push. [cite:1] |
+| AC-11 | The participant can open a pull request from their practice branch to their fork's `main` and observe CI status. [cite:1] |
+| AC-12 | The participant can confirm that a direct push to the protected `main` branch is rejected by GitHub. [cite:1] |
 
 ## Extension roadmap
 
@@ -301,8 +363,11 @@ Possible extensions include:
 - building a small Streamlit user interface, [cite:1]
 - adding logging and configuration files, [cite:1]
 - exposing the predictor as a Flask or FastAPI endpoint, [cite:1]
-- containerizing the application with Docker, and [cite:1]
-- integrating model training notebooks or dashboard views. [cite:1]
+- containerizing the application with Docker, [cite:1]
+- integrating model training notebooks or dashboard views, [cite:1]
+- extending the GitHub Actions workflow with matrix testing across Python versions, [cite:1]
+- adding a PR review gate requiring at least one approval before merge, and [cite:1]
+- using GitHub Environments and deployment protection rules for staged promotion. [cite:1]
 
 ## Conclusion
 
