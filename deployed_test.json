@@ -1,0 +1,10 @@
+{
+    "environment": "test",
+    "status": "success",
+    "deployed_at": "2026-06-07T06:20:34.155117Z",
+    "config": {
+        "model_threshold": 0.7,
+        "faq_confidence": 0.6,
+        "debug": false
+    }
+}
